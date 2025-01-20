@@ -13,7 +13,7 @@ namespace LibraryManagementModels
         [Key]
         [Required]
         [DisplayName("User ID")]
-        public Guid UserId { get; set; }
+        public Guid UserId { get; set; } = Guid.NewGuid();
 
         [Required]
         [StringLength(100, MinimumLength = 2)]

@@ -35,6 +35,6 @@ namespace LibraryManagementModels
         [DisplayName("Author")]
         public string Author { get; set; }
 
-        public bool isBorrowed { get; set; }
+        public bool isBorrowed { get; set; } = false;
     }
 }
