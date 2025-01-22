@@ -54,12 +54,12 @@ namespace LibraryManagementAPI.Controllers
             }
         }
 
-        [HttpGet("{search}/{Query?}")]
-        public async Task<ActionResult<IEnumerable<BookModel>>> Search(string? Query, string? Genre)
+        [HttpGet("{search}/{Name?}")]
+        public async Task<ActionResult<IEnumerable<BookModel>>> Search(string? Name, string? Genre)
         {
             try
             {
-                var result = await _bookRepository.SearchAsync(Query, Genre);
+                var result = await _bookRepository.SearchAsync(Name, Genre);
 
                 if (result.Any())
                 {
