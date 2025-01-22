@@ -1,4 +1,5 @@
 using LibraryManagementAPI.Database;
+using LibraryManagementAPI.Models.BookRepository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,9 @@ builder.Services.AddDbContext<LibraryContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("LibraryConnection"),
         new MySqlServerVersion(new Version(8,0,34)))
 );
+
+//Add Life Cycle
+builder.Services.AddScoped<IBookRepository, BookRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -24,9 +24,11 @@ namespace LibraryManagementAPI.Migrations
 
             modelBuilder.Entity("LibraryManagementModels.BookModel", b =>
                 {
-                    b.Property<string>("ISBN")
-                        .HasMaxLength(13)
-                        .HasColumnType("varchar(13)");
+                    b.Property<int>("BookId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("BookId"));
 
                     b.Property<string>("Author")
                         .IsRequired()
@@ -43,6 +45,11 @@ namespace LibraryManagementAPI.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
+                    b.Property<string>("ISBN")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("varchar(13)");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -51,44 +58,48 @@ namespace LibraryManagementAPI.Migrations
                     b.Property<bool>("isBorrowed")
                         .HasColumnType("tinyint(1)");
 
-                    b.HasKey("ISBN");
+                    b.HasKey("BookId");
 
                     b.ToTable("Books");
 
                     b.HasData(
                         new
                         {
-                            ISBN = "9780132350884",
+                            BookId = 1,
                             Author = "Robert C. Martin",
                             Description = "A Handbook of Agile Software Craftsmanship.",
                             Genre = "Programming",
+                            ISBN = "9780132350884",
                             Title = "Clean Code",
                             isBorrowed = false
                         },
                         new
                         {
-                            ISBN = "9780321127426",
+                            BookId = 2,
                             Author = "Eric Evans",
                             Description = "Tackling Complexity in the Heart of Software.",
                             Genre = "Software Development",
+                            ISBN = "9780321127426",
                             Title = "Domain-Driven Design",
                             isBorrowed = false
                         },
                         new
                         {
-                            ISBN = "9780596007126",
+                            BookId = 3,
                             Author = "Eric Freeman & Elisabeth Robson",
                             Description = "A brain-friendly guide to design patterns.",
                             Genre = "Design Patterns",
+                            ISBN = "9780596007126",
                             Title = "Head First Design Patterns",
                             isBorrowed = false
                         },
                         new
                         {
-                            ISBN = "9780134494166",
+                            BookId = 4,
                             Author = "Andrew Hunt & David Thomas",
                             Description = "Your Journey to Mastery, 20th Anniversary Edition.",
                             Genre = "Programming",
+                            ISBN = "9780134494166",
                             Title = "The Pragmatic Programmer",
                             isBorrowed = false
                         });
@@ -173,7 +184,7 @@ namespace LibraryManagementAPI.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("82b5ac8f-d873-4abe-9548-423719e41f59"),
+                            UserId = new Guid("99f59973-6cef-4ad2-93e0-3aefff8f7bfd"),
                             Email = "johndoe@example.com",
                             FirstName = "John",
                             LastName = "Doe",
@@ -183,7 +194,7 @@ namespace LibraryManagementAPI.Migrations
                         },
                         new
                         {
-                            UserId = new Guid("3eab4793-18b1-473a-811b-9f7ac1b95f8e"),
+                            UserId = new Guid("60d764f9-a3d8-48a1-a967-8b7751571e4d"),
                             Email = "janesmith@example.com",
                             FirstName = "Jane",
                             LastName = "Smith",
@@ -193,7 +204,7 @@ namespace LibraryManagementAPI.Migrations
                         },
                         new
                         {
-                            UserId = new Guid("e6129633-16f2-421f-ac6a-3853f6bb200e"),
+                            UserId = new Guid("767a8cf5-421c-4c63-b06c-747b316431ea"),
                             Email = "michaeljohnson@example.com",
                             FirstName = "Michael",
                             LastName = "Johnson",
@@ -203,7 +214,7 @@ namespace LibraryManagementAPI.Migrations
                         },
                         new
                         {
-                            UserId = new Guid("2bc9144c-64d8-4c23-814a-d1e0641a66fb"),
+                            UserId = new Guid("269e7c08-0eab-42a2-9db6-73045cbac65b"),
                             Email = "emilydavis@example.com",
                             FirstName = "Emily",
                             LastName = "Davis",

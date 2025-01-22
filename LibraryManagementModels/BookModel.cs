@@ -10,8 +10,11 @@ namespace LibraryManagementModels
 {
     public class BookModel
     {
-        [Required]
         [Key]
+        [DisplayName("Book ID")]
+        public int BookId { get; set; }
+
+        [Required]
         [StringLength(13, MinimumLength = 10, ErrorMessage = "ISBN must be 10 - 13 characters.")]
         [DisplayName("ISBN")]
         public string ISBN { get; set; }

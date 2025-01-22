@@ -23,6 +23,7 @@ namespace LibraryManagementAPI.Database
             //seed books
             modelBuilder.Entity<BookModel>().HasData( new BookModel 
             {
+                BookId = 1,
                 ISBN = "9780132350884",
                 Title = "Clean Code",
                 Genre = "Programming",
@@ -31,6 +32,7 @@ namespace LibraryManagementAPI.Database
             }, 
             new BookModel 
             {
+                BookId = 2,
                 ISBN = "9780321127426",
                 Title = "Domain-Driven Design",
                 Genre = "Software Development",
@@ -39,6 +41,7 @@ namespace LibraryManagementAPI.Database
             },
             new BookModel
             {
+                BookId = 3,
                 ISBN = "9780596007126",
                 Title = "Head First Design Patterns",
                 Genre = "Design Patterns",
@@ -47,6 +50,7 @@ namespace LibraryManagementAPI.Database
             },
             new BookModel
             {
+                BookId = 4,
                 ISBN = "9780134494166",
                 Title = "The Pragmatic Programmer",
                 Genre = "Programming",
