@@ -1,5 +1,6 @@
 using LibraryManagementAPI.Database;
 using LibraryManagementAPI.Models.BookRepository;
+using LibraryManagementAPI.Models.TransactionRepository;
 using LibraryManagementAPI.Models.UserRepository;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +17,7 @@ builder.Services.AddDbContext<LibraryContext>(options =>
 //Add Life Cycle
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
