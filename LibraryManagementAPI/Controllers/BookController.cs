@@ -33,6 +33,27 @@ namespace LibraryManagementAPI.Controllers
             }
         }
 
+        [HttpGet("{Borrowed}")]
+        public async Task<ActionResult<IEnumerable<BookModel>>> GetBorrowedBooks()
+        {
+            try
+            {
+                var borrowedBooks = await _bookRepository.GetBorrowedBooksAsync();
+
+                if (borrowedBooks.Any()) 
+                {
+                    return Ok(borrowedBooks);
+                    
+                }
+                return NotFound("No borrowed books.");
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                        "Error retrieving borrowed books from the database.");
+            }
+        }
+
         [HttpGet("{Id:int}")]
         public async Task<ActionResult<BookModel>> GetBookById([FromRoute]int Id)
         {
@@ -54,7 +75,7 @@ namespace LibraryManagementAPI.Controllers
             }
         }
 
-        [HttpGet("{search}/{Name?}")]
+        [HttpGet("{search}/{Name}")]
         public async Task<ActionResult<IEnumerable<BookModel>>> Search(string? Name, string? Genre)
         {
             try
@@ -133,7 +154,7 @@ namespace LibraryManagementAPI.Controllers
         }
 
         [HttpDelete("{Id:int}")]
-        public async Task<ActionResult<BookModel>> DeleteBookModel([FromRoute]int Id) 
+        public async Task<ActionResult<BookModel>> DeleteBookModel([FromRoute] int Id) 
         {
             try
             {
