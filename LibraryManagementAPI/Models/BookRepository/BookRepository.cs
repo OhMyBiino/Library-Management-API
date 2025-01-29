@@ -26,6 +26,13 @@ namespace LibraryManagementAPI.Models.BookRepository
             return book;
         }
 
+        public async Task<IEnumerable<BookModel>> GetBorrowedBooksAsync() 
+        {
+            var borrowedBooks = await _context.Books.Where(book => book.isBorrowed == true).ToListAsync();
+
+            return borrowedBooks;
+        }
+
         public async Task<IEnumerable<BookModel>> SearchAsync(string Name, string Genre) 
         {
             IQueryable<BookModel> query = _context.Books;
