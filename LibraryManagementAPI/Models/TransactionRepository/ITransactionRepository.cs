@@ -6,6 +6,8 @@ namespace LibraryManagementAPI.Models.TransactionRepository
     {
         Task<IEnumerable<TransactionModel>> GetTransactionsAsync();
         Task<TransactionModel> GetTransactionByIdAsync(Guid Id);
+        Task<IEnumerable<TransactionModel>> GetUserTransactionsAsync(Guid UserId);
+        Task<IEnumerable<TransactionModel>> GetUserBorrowTransactionsAsync(Guid UserID);
         Task<IEnumerable<TransactionModel>> SearchAsync(string Query);
         Task<TransactionModel> CreateTransactionAsync(TransactionModel newTransaction);
         Task<TransactionModel> UpdateTransactionAsync(TransactionModel updatedTransaction);
