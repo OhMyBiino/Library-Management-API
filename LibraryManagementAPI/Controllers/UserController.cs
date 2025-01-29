@@ -32,7 +32,7 @@ namespace LibraryManagementAPI.Controllers
         }
 
         [HttpGet("{Id:guid}")]
-        public async Task<ActionResult<UserModel>> GetUserById(Guid Id)
+        public async Task<ActionResult<UserModel>> GetUserById([FromBody]Guid Id)
         {
             try
             {
@@ -79,7 +79,7 @@ namespace LibraryManagementAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserModel>> CreateUser(UserModel newUser)
+        public async Task<ActionResult<UserModel>> CreateUser([FromBody]UserModel newUser)
         {
             try
             {
@@ -119,7 +119,7 @@ namespace LibraryManagementAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<UserModel>> UpdateUser(Guid Id, UserModel updatedUser)
+        public async Task<ActionResult<UserModel>> UpdateUser([FromRoute]Guid Id, [FromBody]UserModel updatedUser)
         {
             try
             {
@@ -149,7 +149,7 @@ namespace LibraryManagementAPI.Controllers
 
 
         [HttpDelete("{Id:guid}")]
-        public async Task<ActionResult<UserModel>> DeleteUser(Guid Id) 
+        public async Task<ActionResult<UserModel>> DeleteUser([FromRoute] Guid Id) 
         {
             try
             {
