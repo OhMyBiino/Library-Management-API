@@ -13,7 +13,7 @@ namespace LibraryManagementModels
 
         [Required]
         [DisplayName("User ID")]
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
 
         [Required]
         [StringLength(100, MinimumLength =2)]
@@ -21,9 +21,8 @@ namespace LibraryManagementModels
         public string BorrowerName { get; set; }
 
         [Required]
-        [StringLength(13, MinimumLength = 10, ErrorMessage = "ISBN must be 10-13 characters.")]
-        [DisplayName("Book ISBN")]
-        public string ISBN { get; set; }
+        [DisplayName("Book Id")]
+        public int BookId { get; set; }
 
         [Required]
         public TransactionType Type { get; set; }
@@ -32,5 +31,7 @@ namespace LibraryManagementModels
 
         [DisplayName("Book Status")]
         public string Status { get; set; }
+
+        public UserModel? user { get; set; }
     }
 }
