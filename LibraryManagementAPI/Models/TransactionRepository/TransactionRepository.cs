@@ -1,5 +1,6 @@
 ﻿using LibraryManagementAPI.Database;
 using LibraryManagementModels;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagementAPI.Models.TransactionRepository
@@ -26,6 +27,23 @@ namespace LibraryManagementAPI.Models.TransactionRepository
 
             return transaction;
         }
+
+        public async Task<IEnumerable<TransactionModel>> GetUserTransactionsAsync(Guid UserId)
+        {
+            var userTransactions = await _context.Transactions
+                .Where(transaction => transaction.UserId == UserId).ToListAsync();
+
+            return userTransactions;
+        }
+
+        public async Task<IEnumerable<TransactionModel>> GetUserBorrowTransactionsAsync(Guid UserId)
+        {
+            var borrowedTransactions = await _context.Transactions.Where(transaction =>
+                transaction.UserId == UserId && transaction.Status == "Borrowed").ToListAsync();
+
+            return borrowedTransactions;
+        }
+
         public async Task<IEnumerable<TransactionModel>> SearchAsync(string Query)
         {
 
@@ -33,8 +51,8 @@ namespace LibraryManagementAPI.Models.TransactionRepository
 
             if (!String.IsNullOrEmpty(Query))
             {
-                query = query.Where(transaction => transaction.UserId.Contains(Query) ||
-                transaction.BorrowerName.Contains(Query) || transaction.ISBN.Contains(Query) ||
+                query = query.Where(transaction => transaction.BorrowerName.Contains(Query) || 
+                transaction.BookId.ToString().Contains(Query) || transaction.UserId.ToString().Contains(Query) ||
                 transaction.Status.Contains(Query));
             }
 
@@ -51,7 +69,7 @@ namespace LibraryManagementAPI.Models.TransactionRepository
         }
         public async Task<TransactionModel> UpdateTransactionAsync(TransactionModel updatedTransaction)
         {
-            var existingTransction = await _context.Transactions.FindAsync(updatedTransaction.UserId);
+            var existingTransction = await _context.Transactions.FindAsync(updatedTransaction.TransactionId);
 
             if (existingTransction != null)
             {
