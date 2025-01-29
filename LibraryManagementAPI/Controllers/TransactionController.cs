@@ -1,11 +1,12 @@
 ﻿using LibraryManagementAPI.Models.TransactionRepository;
+using LibraryManagementAPI.Models.UserRepository;
 using LibraryManagementModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagementAPI.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class TransactionController : ControllerBase
     {
 
@@ -23,18 +24,22 @@ namespace LibraryManagementAPI.Controllers
             {
                 var transactions = await _transactionRepository.GetTransactionsAsync();
 
-                if (transactions == null) return NotFound("No Transactions.");
+                if (transactions == null) 
+                {
+                    return NotFound("No Transactions.");
+                }
 
                 return Ok(transactions);
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "");
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error retrieving transactions from the database.");
             }
         }
 
         [HttpGet("{Id:guid}")]
-        public async Task<ActionResult<IEnumerable<TransactionModel>>> GetTransactionById([FromRoute] Guid Id)
+        public async Task<ActionResult<IEnumerable<TransactionModel>>> GetTransactionById([FromRoute]Guid Id)
         {
             try
             {
@@ -49,12 +54,55 @@ namespace LibraryManagementAPI.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "");
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Error retrieving transaction with Id:{Id} from the database.");
             }
         }
 
-        [HttpGet("{search}/{Query?}")]
-        public async Task<ActionResult<IEnumerable<TransactionModel>>> Search([FromQuery] string? Query)
+        [HttpGet("{User}/{Id:guid}")]
+        public async Task<ActionResult<IEnumerable<TransactionModel>>> GetUserTransactions([FromRoute] Guid UserId)
+        {
+            try
+            {
+                var userTransactions = await _transactionRepository.GetUserTransactionsAsync(UserId);
+
+                if (userTransactions.Any())
+                {
+                    return Ok(userTransactions);
+                }
+
+                return NotFound("No Transactions.");
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                        $"Error retrieving transaction with ID:{UserId} from the database.");
+            }
+        }
+
+        [HttpGet("{Borrowed}/{User}/{Id:guid}")]
+        public async Task<ActionResult<IEnumerable<TransactionModel>>> GetUserBorrowTransactions([FromRoute] Guid Id)
+        {
+            try
+            {
+                var borrowedTransactions = await _transactionRepository.GetUserBorrowTransactionsAsync(Id);
+
+                if (borrowedTransactions.Any()) 
+                {
+                    return Ok(borrowedTransactions);
+                }
+
+                return NotFound("No user transactions found.");
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, 
+                        "Error retrieving transactions from the database.");
+            }
+        }
+
+        [HttpGet("{search}")]
+        public async Task<ActionResult<IEnumerable<TransactionModel>>> Search([FromQuery]string? Query)
         {
             try
             {
@@ -74,12 +122,13 @@ namespace LibraryManagementAPI.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "");
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error searching transactions from the database.");
             }
         }
 
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<TransactionModel>>> CreateTransaction([FromBody] TransactionModel newTransaction)
+        public async Task<ActionResult<IEnumerable<TransactionModel>>> CreateTransaction([FromBody]TransactionModel newTransaction)
         {
             try
             {
@@ -95,14 +144,14 @@ namespace LibraryManagementAPI.Controllers
                 return CreatedAtAction(nameof(GetTransactionById),
                         new { Id = createdTransaction.TransactionId }, createdTransaction);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "");
+                throw new Exception(ex.Message);
             }
         }
 
         [HttpPut("{Id:guid}")]
-        public async Task<ActionResult<IEnumerable<TransactionModel>>> UpdateTransaction([FromRoute] Guid Id, [FromBody]TransactionModel updatedTransaction)
+        public async Task<ActionResult<IEnumerable<TransactionModel>>> UpdateTransaction([FromRoute]Guid Id, [FromBody]TransactionModel updatedTransaction)
         {
             try
             {
@@ -124,12 +173,13 @@ namespace LibraryManagementAPI.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "");
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error creating transaction from the database.");
             }
         }
 
         [HttpDelete("{Id:guid}")]
-        public async Task<ActionResult<IEnumerable<TransactionModel>>> DeleteTransaction([FromRoute] Guid Id)
+        public async Task<ActionResult<IEnumerable<TransactionModel>>> DeleteTransaction([FromRoute]Guid Id)
         {
             try
             {
@@ -146,7 +196,8 @@ namespace LibraryManagementAPI.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "");
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error deleting transaction from the database.");
             }
         }
     }
