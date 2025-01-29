@@ -111,6 +111,9 @@ namespace LibraryManagementAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("BorrowDate")
                         .HasColumnType("datetime(6)");
 
@@ -122,11 +125,6 @@ namespace LibraryManagementAPI.Migrations
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("ISBN")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("varchar(13)");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -134,11 +132,12 @@ namespace LibraryManagementAPI.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("TransactionId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Transactions");
                 });
@@ -184,7 +183,7 @@ namespace LibraryManagementAPI.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("99f59973-6cef-4ad2-93e0-3aefff8f7bfd"),
+                            UserId = new Guid("35eee8d8-a72e-40fc-ae9d-c6df582136f3"),
                             Email = "johndoe@example.com",
                             FirstName = "John",
                             LastName = "Doe",
@@ -194,7 +193,7 @@ namespace LibraryManagementAPI.Migrations
                         },
                         new
                         {
-                            UserId = new Guid("60d764f9-a3d8-48a1-a967-8b7751571e4d"),
+                            UserId = new Guid("749ee8ba-f0f9-47c7-bc19-029db716fefd"),
                             Email = "janesmith@example.com",
                             FirstName = "Jane",
                             LastName = "Smith",
@@ -204,7 +203,7 @@ namespace LibraryManagementAPI.Migrations
                         },
                         new
                         {
-                            UserId = new Guid("767a8cf5-421c-4c63-b06c-747b316431ea"),
+                            UserId = new Guid("72828d08-3c2e-443a-826b-601e1616cea5"),
                             Email = "michaeljohnson@example.com",
                             FirstName = "Michael",
                             LastName = "Johnson",
@@ -214,7 +213,7 @@ namespace LibraryManagementAPI.Migrations
                         },
                         new
                         {
-                            UserId = new Guid("269e7c08-0eab-42a2-9db6-73045cbac65b"),
+                            UserId = new Guid("dc048abd-de1e-4e46-a006-b582448e5ca5"),
                             Email = "emilydavis@example.com",
                             FirstName = "Emily",
                             LastName = "Davis",
@@ -222,6 +221,22 @@ namespace LibraryManagementAPI.Migrations
                             PhoneNumber = "09123543211",
                             UserName = "emilydavis24681357"
                         });
+                });
+
+            modelBuilder.Entity("LibraryManagementModels.TransactionModel", b =>
+                {
+                    b.HasOne("LibraryManagementModels.UserModel", "user")
+                        .WithMany("Transactions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("user");
+                });
+
+            modelBuilder.Entity("LibraryManagementModels.UserModel", b =>
+                {
+                    b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618
         }

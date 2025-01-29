@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,11 +33,14 @@ namespace LibraryManagementModels
 
         [Required]
         public string PasswordHash { get; set; }
+
         public string Email { get; set; }
 
         [Required]
         [DisplayName("PhoneNumber")]
         [StringLength(11,MinimumLength =11, ErrorMessage = "Phone number must be 11 characters.")]
         public string PhoneNumber { get; set; }
+
+        public ICollection<TransactionModel>? Transactions { get; set; }
     }
 }

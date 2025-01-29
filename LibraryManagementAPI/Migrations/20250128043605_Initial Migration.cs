@@ -42,29 +42,6 @@ namespace LibraryManagementAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Transactions",
-                columns: table => new
-                {
-                    TransactionId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    UserId = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    BorrowerName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ISBN = table.Column<string>(type: "varchar(13)", maxLength: 13, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    BorrowDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DueDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Status = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Transactions", x => x.TransactionId);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -88,6 +65,33 @@ namespace LibraryManagementAPI.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                name: "Transactions",
+                columns: table => new
+                {
+                    TransactionId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    BorrowerName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    BookId = table.Column<int>(type: "int", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    BorrowDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    DueDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Status = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Transactions", x => x.TransactionId);
+                    table.ForeignKey(
+                        name: "FK_Transactions_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
             migrationBuilder.InsertData(
                 table: "Books",
                 columns: new[] { "BookId", "Author", "Description", "Genre", "ISBN", "Title", "isBorrowed" },
@@ -104,11 +108,16 @@ namespace LibraryManagementAPI.Migrations
                 columns: new[] { "UserId", "Email", "FirstName", "LastName", "PasswordHash", "PhoneNumber", "UserName" },
                 values: new object[,]
                 {
-                    { new Guid("269e7c08-0eab-42a2-9db6-73045cbac65b"), "emilydavis@example.com", "Emily", "Davis", "25f9e794323b453885f5181f1b624d0b", "09123543211", "emilydavis24681357" },
-                    { new Guid("60d764f9-a3d8-48a1-a967-8b7751571e4d"), "janesmith@example.com", "Jane", "Smith", "e99a18c428cb38d5f260853678922e03", "09123444444", "janesmith87654321" },
-                    { new Guid("767a8cf5-421c-4c63-b06c-747b316431ea"), "michaeljohnson@example.com", "Michael", "Johnson", "d8578edf8458ce06fbc5bb76a58c5ca4", "09912312322", "michaeljohnson1212" },
-                    { new Guid("99f59973-6cef-4ad2-93e0-3aefff8f7bfd"), "johndoe@example.com", "John", "Doe", "5f4dcc3b5aa765d61d8327deb882cf99", "09122222222", "johndoe12345678" }
+                    { new Guid("35eee8d8-a72e-40fc-ae9d-c6df582136f3"), "johndoe@example.com", "John", "Doe", "5f4dcc3b5aa765d61d8327deb882cf99", "09122222222", "johndoe12345678" },
+                    { new Guid("72828d08-3c2e-443a-826b-601e1616cea5"), "michaeljohnson@example.com", "Michael", "Johnson", "d8578edf8458ce06fbc5bb76a58c5ca4", "09912312322", "michaeljohnson1212" },
+                    { new Guid("749ee8ba-f0f9-47c7-bc19-029db716fefd"), "janesmith@example.com", "Jane", "Smith", "e99a18c428cb38d5f260853678922e03", "09123444444", "janesmith87654321" },
+                    { new Guid("dc048abd-de1e-4e46-a006-b582448e5ca5"), "emilydavis@example.com", "Emily", "Davis", "25f9e794323b453885f5181f1b624d0b", "09123543211", "emilydavis24681357" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transactions_UserId",
+                table: "Transactions",
+                column: "UserId");
         }
 
         /// <inheritdoc />
